@@ -41,7 +41,7 @@ public class Acheteur implements Client {
 
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
-	} 
+	}  
 
 	public Compte getCompte() {
 		return compte;
