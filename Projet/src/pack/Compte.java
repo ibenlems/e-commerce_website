@@ -18,7 +18,7 @@ public class Compte {
 
 	
 	@OneToOne
-	Vendeur ownerV;
+	//Vendeur ownerV;
 	Acheteur ownerA;
 	
 	public Compte(String username, String password) {
