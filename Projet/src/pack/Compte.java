@@ -21,6 +21,11 @@ public class Compte {
 	//Vendeur ownerV;
 	Acheteur ownerA;
 	
+	@OneToOne
+	Vendeur ownerV;
+	
+	public Compte() {};
+	
 	public Compte(String username, String password) {
 		super();
 		this.username = username;

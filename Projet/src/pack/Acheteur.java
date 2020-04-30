@@ -4,19 +4,43 @@ import java.util.Collection;
 import javax.persistence.*;
 
 @Entity
-public class Acheteur implements Client {
+public class Acheteur  {
 
 	Integer note;
 	String nom;
 	String prenom;
-	Compte compte;
+	String Adresse;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	int id;
 	
-	@ManyToMany(fetch=FetchType.EAGER) //chargement du panier
-	Collection<Produit>  listes_articles ;
+	@OneToMany(mappedBy="acheteur",fetch=FetchType.EAGER) //chargement du panier
+	Collection<Produit>  Produits ;
+	
+	@OneToOne(mappedBy="ownerA",fetch=FetchType.EAGER)
+	Compte Acompte;
+	
+	
+	
+	public Compte getAcompte() {
+		return Acompte;
+	}
+
+	public void setAcompte(Compte acompte) {
+		this.Acompte = acompte;
+	}
+
+	public Acheteur() {};
+	
+
+
+	public Acheteur(String nom, String prenom, String adresse) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+		Adresse = adresse;
+	}
 
 	public Integer getNote() {
 		return note;
@@ -60,11 +84,11 @@ public class Acheteur implements Client {
 	}
 
 	public Collection<Produit> getArticles() {
-		return listes_articles;
+		return Produits;
 	}
 
 	public void setArticles(Collection<Produit> listes_articles) {
-		this.listes_articles = listes_articles;
+		this.Produits = listes_articles;
 	}
 	
 	

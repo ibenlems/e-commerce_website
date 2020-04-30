@@ -13,17 +13,31 @@ public class Vendeur {
 	int id;
 	String nom;
 	String prenom;
+	String adresse;
+	
+	public Vendeur(String nom, String prenom, String adresse) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+		this.adresse = adresse;
+	}
+	@OneToOne(mappedBy="ownerV",fetch=FetchType.EAGER)
+	Compte Vcompte;
+	
+	@OneToMany(mappedBy="vendeur",fetch=FetchType.EAGER)
+    Collection<Produit> Produits;
+	
 	public int getId() {
 		return id;
 	}
 	
 	public Compte getVcompte() {
-		return vcompte;
+		return Vcompte;
 	}
 
 
 	public void setVcompte(Compte vcompte) {
-		this.vcompte = vcompte;
+		this.Vcompte = vcompte;
 	}
 
 
@@ -36,12 +50,7 @@ public class Vendeur {
 		Produits = produits;
 	}
 
-	@OneToOne(mappedBy="ownerv",fetch=FetchType.EAGER)
-	Compte vcompte;
-	
-	@OneToMany(mappedBy="personne",fetch=FetchType.EAGER)
-    Collection<Produit> Produits;
-	
+
 	
 	
 	public Vendeur() {};
