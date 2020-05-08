@@ -4,33 +4,34 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Compte {
 
-	private String username;
-	private String password;
-	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.AUTO)
 	int id;
+	String username;
+	String password;
+	String email;
+	
+	@OneToOne
+	@JsonIgnore
+	Client owner;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	
-	@OneToOne
-	//Vendeur ownerV;
-	Acheteur ownerA;
-	
-	@OneToOne
-	Vendeur ownerV;
-	
-	public Compte() {};
-	
-	public Compte(String username, String password) {
-		super();
-		this.username = username;
-		this.password = password;
-	}
 
 	public String getUsername() {
 		return username;
@@ -48,21 +49,21 @@ public class Compte {
 		this.password = password;
 	}
 
-	public int getId() {
-		return id;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
+	public Client getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Client owner) {
+		this.owner = owner;
+	}
 	
 	
 }

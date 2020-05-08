@@ -13,11 +13,39 @@ public class Produit {
 	
 	String description;
 	
+	String ImagUrl;
+	
+	int prix;
+	
+	public String getImagUrl() {
+		return ImagUrl;
+	}
+
+
+
+	public void setImagUrl(String imagUrl) {
+		ImagUrl = imagUrl;
+	}
+
+
+
+	public int getPrix() {
+		return prix;
+	}
+
+
+
+	public void setPrix(int prix) {
+		this.prix = prix;
+	}
+
+
+
 	@ManyToOne()
-	Acheteur acheteur;
+	Client acheteur;
 	
 	@ManyToOne()
-	Vendeur vendeur;
+	Client vendeur;
 	
 	
 	@Lob
@@ -66,16 +94,16 @@ public class Produit {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Acheteur getAcheteur() {
+	public Client getAcheteur() {
 		return acheteur;
 	}
-	public void setAcheteur(Acheteur acheteur) {
+	public void setAcheteur(Client acheteur) {
 		this.acheteur = acheteur;
 	}
-	public Vendeur getVendeur() {
+	public Client getVendeur() {
 		return vendeur;
 	}
-	public void setVendeur(Vendeur vendeur) {
+	public void setVendeur(Client vendeur) {
 		this.vendeur = vendeur;
 	}
 

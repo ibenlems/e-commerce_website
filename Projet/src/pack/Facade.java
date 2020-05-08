@@ -1,90 +1,68 @@
 package pack;
-import java.util.*;
+
+import java.util.Collection;
 
 import javax.ejb.Singleton;
-import javax.persistence.*;
-
-
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 
 @Singleton
+@Path("/")
 public class Facade {
-	
+
 	@PersistenceContext
-	private EntityManager em;
-		
-	public void ajoutAcheteur(String nom,String prenom,String adresse) {
-		Acheteur a = new Acheteur(nom,prenom,adresse);
+	EntityManager em;
+	
+	@POST
+	@Path("/addClient")
+    @Consumes({ "application/json" })
+	public void addClient(Client p) {
+		System.out.println("coucou");
+		em.persist(p);
+	}
+	
+	@POST
+	@Path("/addCompte")
+    @Consumes({ "application/json" })
+	public void addCompte(Compte a) {
 		em.persist(a);
 	}
 	
 	
-	public void ajoutVendeur(String nom,String prenom,String adresse) {
-		Vendeur v = new Vendeur(nom,prenom,adresse);
-		em.persist(v);
+	
+	@GET
+	@Path("/listClients")
+    @Produces({ "application/json" })
+	public Collection<Client> listClients() {
+		return em.createQuery("from Client", Client.class).getResultList();
 	}
 	
-	
-	public void ajoutProduit(String nom,String description) {
-		Produit p = new Produit(nom,description);
-		em.persist(p);
+	@GET
+	@Path("/listComptes")
+    @Produces({ "application/json" })
+	public Collection<Compte> listComptes() {
+		return em.createQuery("from Compte", Compte.class).getResultList();	
 	}
 	
-	
-	public void retirerProduit(String nom) {
-		  Query query = em.createQuery(
-		"DELETE FROM Produit p WHERE p.nom="+nom);
-	  int deletedCount = query.executeUpdate();
+	@POST
+	@Path("/associate")
+    @Consumes({ "application/json" })
+	public void associate(Association as) {
+		Client client = em.find(Client.class, as.getClientId());
+		Compte compte = em.find(Compte.class, as.getCompteId());		
+		compte.setOwner(client);
 	}
 	
-	public void retirerProduit(int id) {
-		  Produit p = em.find(Produit.class, id);
-
-		  em.getTransaction().begin();
-		  em.remove(p);
-		  em.getTransaction().commit();
+	@GET
+	@Path("/listProduits")
+    @Produces({ "application/json" })
+	public Collection<Produit> listProduits() {
+		return em.createQuery("from Produit", Produit.class).getResultList();	
 	}
 	
-	public void rajouter(Produit p, Client c) {
-		c.getArticles().add(p);
-	}
-	
-	public void retirer(Produit p, Client c) {
-		c.getArticles().remove(p);
-	}
-	
-	
-	public Collection<Acheteur> listeAcheteurs(){
-		TypedQuery<Acheteur> req = em.createQuery("select a from Acheteur a",Acheteur.class);
-		Collection<Acheteur> clients = req.getResultList();
-		return clients;
-	}
-	
-	public Collection<Vendeur> listeVendeurs(){
-		TypedQuery<Vendeur> req = em.createQuery("select v from Vendeur v",Vendeur.class);
-		Collection<Vendeur> clients = req.getResultList();
-		return clients;
-	}
-	
-	public Collection<Produit> listeProduits(){
-		TypedQuery<Produit> req = em.createQuery("select p from Produit p",Produit.class);
-		Collection<Produit> produits = req.getResultList();
-		return produits;
-	}
-	
-	
-	public void associerA(int idp, int ida) {		
-		Produit p =em.find(Produit.class,idp);
-		Acheteur c = em.find(Acheteur.class,ida);
-		if (p==null || c == null) throw new RuntimeException("P ou C null");
-		
-		c.getArticles().add(p);
-	}
-	
-	public void associerV(int idp, int idv) {		
-		Produit p =em.find(Produit.class,idp);
-		Vendeur c = em.find(Vendeur.class,idv);
-		if (p==null || c == null) throw new RuntimeException("P ou C null");
-		
-		c.getProduits().add(p);
-	}
 }
